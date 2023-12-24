@@ -22,3 +22,13 @@ Database Configuration
 
 - Database Setup
 Please create a database and set the name's database in env. project laravel
+
+
+
+After config project 
+
+run command below 
+
+>> npm install 
+>> npm run dev 
+>> npm php artisan serve
