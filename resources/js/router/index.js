@@ -10,6 +10,7 @@ import Dashboard from '../page/dashboard.vue';
 import Porduct from '../page/products/products.vue';
 import Category from '../page/category/category.vue'
 import Sale from '../page/sale/sale.vue';
+import Customer from '../page/customers/customers.vue';
 
 
 // 2. Define some routes
@@ -24,7 +25,8 @@ const routes = [
             { path: '/dashboard', component: Dashboard },
             { path: '/products', component: Porduct },
             { path: '/category', component: Category },
-            { path: '/sale', component: Sale }
+            { path: '/sale', component: Sale },
+            { path: '/customers', component: Customer }
             // ...other sub routes
         ],
     },

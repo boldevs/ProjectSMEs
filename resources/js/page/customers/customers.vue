@@ -2,7 +2,7 @@
     <!-- component -->
     <!-- This is an example component -->
     <div>
-        <h1>Category</h1>
+        <h1>Customer </h1>
         <div class="flex items-center justify-between">
             <div class="relative my-2 w-[400px]">
                 <input type="text" id="password" v-model="searchKey"
