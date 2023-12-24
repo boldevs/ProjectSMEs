@@ -31,4 +31,4 @@ run command below
 
 >> npm install 
 >> npm run dev 
->> npm php artisan serve
+>>php artisan serve
