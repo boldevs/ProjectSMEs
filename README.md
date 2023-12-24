@@ -1,14 +1,24 @@
 # ProjectSMEs
 
 
-After You git this project you need to do these step 
+After You gits this project you need to do these steps 
+>> Composer install
 
-1. npm i  //for install node module
-2. create Database in your RDMS and Set name must be equal in each other //
-3. php artisan migrate // for create seeder 
+Create .env File:
+>> php artisan key:generate
+
+Permissions and Ownership:
+File Permissions:
+>>chmod -R 775 storage bootstrap/cache
+
+Composer Autoload:
+Composer Autoload:
+>>composer dump-autoload
+
+Database Setup:
+Database Configuration
+>> php artisan migrate
 
 
-// run app
-
-1. npm run dev
-2. php artisan serve // ctrl + url 
+- Database Setup
+Please create a database and set the name's database in env. project laravel
