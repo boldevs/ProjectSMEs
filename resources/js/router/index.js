@@ -11,7 +11,7 @@ import Porduct from '../page/products/products.vue';
 import Category from '../page/category/category.vue'
 import Sale from '../page/sale/sale.vue';
 import Customer from '../page/customers/customers.vue';
-
+import Vender from '../page/venders/vendors.vue';
 
 // 2. Define some routes
 // Each route should map to a component.
@@ -26,7 +26,8 @@ const routes = [
             { path: '/products', component: Porduct },
             { path: '/category', component: Category },
             { path: '/sale', component: Sale },
-            { path: '/customers', component: Customer }
+            { path: '/customers', component: Customer },
+            { path: '/vendors', component: Vender }
             // ...other sub routes
         ],
     },

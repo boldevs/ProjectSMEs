@@ -139,4 +139,28 @@ class CustomerController extends Controller
         }
 
     }
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+
+        // Perform the search query
+        $customers = Customer::where('customer_name', 'like', '%' . $keyword . '%')
+                        ->orWhere('customer_address', 'like', '%' . $keyword . '%')
+                        ->orWhere('customer_type', 'like', '%' . $keyword . '%')
+                        ->orWhere('customer_contact', 'like', '%' . $keyword . '%')
+                        // Add more fields as needed
+                        ->get();
+
+        if ($customers->count() > 0) {
+            return response()->json([
+                'status' => '200',
+                'customers' => $customers
+            ]);
+        } else {
+            return response()->json([
+                'status' => '404',
+                'message' => 'No Records Found!'
+            ]);
+        }
+    }
 }

@@ -35,7 +35,7 @@
                             v-tooltip.right="'Customer'"></span> <span v-show="dataOpenSideBar">Customer</span></router-link>
                 </div>
                 <div class="  py-3 rounded-md cursor-pointer text-white hover:text-gray-300">
-                    <router-link to="/vendor" class="px-2 flex space-x-2"><span class="pi pi-credit-card"
+                    <router-link to="/vendors" class="px-2 flex space-x-2"><span class="pi pi-credit-card"
                             v-tooltip.right="'Vendor'"></span> <span v-show="dataOpenSideBar">Vendor</span></router-link>
                 </div>
                 <div class="   py-3 rounded-md cursor-pointer  text-white hover:text-gray-300">

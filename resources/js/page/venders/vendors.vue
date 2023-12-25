@@ -2,7 +2,7 @@
     <!-- component -->
     <!-- This is an example component -->
     <div>
-        <h1>Customer </h1>
+        <h1>Venders </h1>
         <div class="flex items-center justify-between">
             <div class="relative my-2 w-[400px]">
                 <input type="text" id="password" v-model="searchKey"
@@ -15,7 +15,7 @@
             <div>
                 <button
                     class="text-white inline-flex items-center bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-6 my-2 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800  "
-                    @click="visible = true" v-tooltip.left="'Add New Customers'">
+                    @click="visible = true" v-tooltip.left="'Add New Vendors'">
                     <i class="pi pi-plus items-center flex justify-center"></i>
                 </button>
                 <button
@@ -46,36 +46,36 @@
                         <form class="p-4 md:p-5" @submit.prevent="save">
                             <div class="grid gap-4 mb-4 grid-cols-2">
                                 <div class="col-span-2">
-                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Customer
+                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Vendor
                                         Name</label>
-                                    <input type="text" v-model="model.product.customer_name"
+                                    <input type="text" v-model="model.product.vendorname"
                                         class="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:border-sky-600  w-full p-2.5 focus:outline-none "
-                                        placeholder="Input Customer Name" required="">
+                                        placeholder="Input Vender Name" required="">
                                 </div>
 
                                 <div class="col-span-2">
-                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Customer
+                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Vendor
                                         Contact</label>
-                                    <input type="text" v-model="model.product.customer_contact"
+                                    <input type="text" v-model="model.product.vendorcontact"
                                         class="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:border-sky-600  w-full p-2.5 focus:outline-none "
-                                        placeholder="Input Customer Contact " required="">
+                                        placeholder="Input Vender Contact " required="">
                                 </div>
 
                                 <div class="col-span-2">
-                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Customer
+                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Vendor
                                         Type</label>
-                                    <input type="text" v-model="model.product.customer_type"
+                                    <input type="text" v-model="model.product.vendor_type"
                                         class="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:border-sky-600  w-full p-2.5 focus:outline-none "
-                                        placeholder="Input Customer Type" required="">
+                                        placeholder="Input Vender Type" required="">
                                 </div>
 
 
                                 <div class="col-span-2">
-                                    <label for="description" class="block mb-2 text-sm font-medium text-gray-900">Customer
+                                    <label for="description" class="block mb-2 text-sm font-medium text-gray-900">Vendor
                                         Address</label>
-                                    <textarea id="description" rows="4" v-model="model.product.customer_address"
+                                    <textarea id="description" rows="4" v-model="model.product.vendor_address"
                                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border-2 focus:border-sky-600  focus:outline-none"
-                                        placeholder="Write Customer ADDRESS Here!"></textarea>
+                                        placeholder="Write Vender Address Here!"></textarea>
                                 </div>
                             </div>
                             <button type="submit"
@@ -111,24 +111,24 @@
                     <tr>
                         <th scope="col"
                             class="px-6 py-3 text-left text-xs font-medium  text-white uppercase tracking-wider">
-                            CID
+                            VID
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                            Customer Name
+                            Vendor Name
                         </th>
 
                         <th scope="col"
                             class="px-6 py-3 text-left text-xs font-medium  text-white uppercase tracking-wider">
-                            Customer Contact
+                            Vendor Contact
                         </th>
 
                         <th scope="col"
                             class="px-6 py-3 text-left text-xs font-medium  text-white uppercase tracking-wider">
-                            Customer Type
+                            Vendor Type
                         </th>
                         <th scope="col"
                             class="px-6 py-3 text-left text-xs font-medium  text-white uppercase tracking-wider">
-                            Customer Address
+                            Vendor Address
                         </th>
 
                         <!-- Action-->
@@ -145,18 +145,18 @@
                             {{ products.id }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            {{ products.customer_name }}
+                            {{ products.vendorname }}
                         </td>
 
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm text-gray-500">
-                                {{ products.customer_contact }}</div>
+                                {{ products.vendorcontact }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-500">{{ products.customer_type }}</div>
+                            <div class="text-sm text-gray-500">{{ products.vendor_type }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-500">{{ products.customer_address }}</div>
+                            <div class="text-sm text-gray-500">{{ products.vendor_address }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap  text-sm font-medium">
                             <div class="card flex justify-content-center">
@@ -200,10 +200,10 @@ export default {
             model: {
                 product: {
                     id: '',
-                    customer_name: '',
-                    customer_contact: '',
-                    customer_type: '',
-                    customer_address: ''
+                    vendorname: '',
+                    vendorcontact: '',
+                    vendor_type: '',
+                    vendor_address: ''
 
 
                 }
@@ -211,7 +211,7 @@ export default {
             result: [],
             contextMenuProduct: null,
             searchKey: '',
-            saveFlex: 'Add New Customer'
+            saveFlex: 'Add New Vendor'
 
 
         };
@@ -235,12 +235,12 @@ export default {
             }
         },
         productLoad() {
-            var page = "http://127.0.0.1:8000/api/customers";
+            var page = "http://127.0.0.1:8000/api/vendors";
             axios.get(page)
                 .then(
                     ({ data }) => {
-                        console.log(data.customers);
-                        this.result = data.customers;
+                        console.log(data.vendors);
+                        this.result = data.vendors;
                     }
                 )
         },
@@ -250,7 +250,7 @@ export default {
             this.model.product = this.contextMenuProduct;
         },
         updateData() {
-            var editrecords = 'http://127.0.0.1:8000/api/customers/' + this.model.product.id;
+            var editrecords = 'http://127.0.0.1:8000/api/vendors/' + this.model.product.id;
             axios.put(editrecords, this.model.product.id)
                 .then(
                     ({ data }) => {
@@ -274,7 +274,7 @@ export default {
         saveData() {
             try {
 
-                axios.post("http://127.0.0.1:8000/api/customers", this.model.product);
+                axios.post("http://127.0.0.1:8000/api/vendors", this.model.product);
 
                 this.resetForm();
                 this.productLoad();
@@ -293,7 +293,7 @@ export default {
             if (this.contextMenuProduct) {
                 const productId = this.contextMenuProduct.id;
 
-                var editrecords = `http://127.0.0.1:8000/api/customers/${productId}`;
+                var editrecords = `http://127.0.0.1:8000/api/vendors/${productId}`;
                 axios.put(editrecords, this.model.product)
                     .then(
                         ({ data }) => {
@@ -315,7 +315,7 @@ export default {
         removeProduct() {
             if (this.contextMenuProduct) {
                 const productId = this.contextMenuProduct.id;
-                const url = `http://127.0.0.1:8000/api/customers/${productId}/delete`;
+                const url = `http://127.0.0.1:8000/api/vendors/${productId}/delete`;
 
                 axios
                     .delete(url)
@@ -334,7 +334,7 @@ export default {
             }
         },
         ressearchCategory() {
-            const apiUrl = `http://127.0.0.1:8000/api/customers/search?keyword=${this.searchKey}`;
+            const apiUrl = `http://127.0.0.1:8000/api/vendors/search?keyword=${this.searchKey}`;
 
             axios.get(apiUrl)
                 .then(response => {
@@ -367,13 +367,13 @@ export default {
         showDialog() {
 
             if (this.contextMenuProduct) {
-                this.saveFlex = 'Update Customer'
+                this.saveFlex = 'Update Vendor'
             }
   
             this.visible = true;
         },
         closeDialog() {
-            this.saveFlex = 'Add New Customer'
+            this.saveFlex = 'Add New Vendor'
             this.visible = false;
             
 

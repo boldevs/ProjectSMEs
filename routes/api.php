@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\VendorController;
 use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\SupplyerController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CustomerController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,6 +32,7 @@ Route::delete('products/{id}/delete', [ProductController::class, 'destroy']);
 
 Route::get('vendors', [VendorController::class, 'index']);
 Route::post('vendors', [VendorController::class, 'store']);
+Route::get('/vendors/search', [VendorController::class, 'search']);
 Route::get('vendors/{id}', [VendorController::class, 'show']);
 Route::put('vendors/{id}/edit', [VendorController::class, 'update']);
 Route::delete('vendors/{id}/delete', [VendorController::class, 'destroy']);
@@ -40,11 +43,12 @@ Route::get('items/{id}', [ItemController::class, 'show']);
 Route::put('items/{id}/edit', [ItemController::class, 'update']);
 Route::delete('items/{id}/delete', [ItemController::class, 'destroy']);
 
-Route::get('customers', [ItemController::class, 'index']);
-Route::post('customers', [ItemController::class, 'store']);
-Route::get('customers/{id}', [ItemController::class, 'show']);
-Route::put('customers/{id}/edit', [ItemController::class, 'update']);
-Route::delete('customers/{id}/delete', [ItemController::class, 'destroy']);
+Route::get('customers', [CustomerController::class, 'index']);
+Route::post('customers', [CustomerController::class, 'store']);
+Route::get('/customers/search', [CustomerController::class, 'search']);
+Route::get('customers/{id}', [CustomerController::class, 'show']);
+Route::put('customers/{id}/edit', [CustomerController::class, 'update']);
+Route::delete('customers/{id}/delete', [CustomerController::class, 'destroy']);
 
 Route::get('supplyers', [SupplyerController::class, 'index']);
 Route::post('supplyers', [SupplyerController::class, 'store']);
