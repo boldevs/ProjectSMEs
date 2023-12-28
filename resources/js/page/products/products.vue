@@ -4,10 +4,10 @@
     <div>
         <div class="flex items-center justify-between">
             <div class="relative my-2 w-[400px]">
-                <input type="text" id="password"
+                <input type="text" id="password" v-model="searchKey"
                     class="w-full pl-3 pr-10 py-2 border-2 border-gray-200 rounded-xl hover:border-gray-300 focus:outline-none focus:border-sky-600 transition-colors"
                     placeholder="Search...">
-                <button
+                <button @click="ressearchCategory"
                     class="block w-7 h-7 text-center text-xl leading-0 absolute top-2 right-2 text-gray-400 focus:outline-none hover:text-gray-900 transition-colors"><i
                         class="pi pi-search"></i></button>
             </div>
@@ -65,12 +65,8 @@
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
                                     <select id="category" v-model="model.product.category_id"
                                         class="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:border-sky-600  w-full p-2.5 focus:outline-none">
-
-
                                         <option v-for="categories in Category" :key="categories.id" :value="categories.id">
                                             {{ categories.name }}</option>
-
-
 
                                     </select>
                                 </div>
@@ -123,7 +119,7 @@
                                                             class="card m-0 px-6 flex flex-column border-1 surface-border align-items-center gap-3">
                                                             <div>
                                                                 <img role="presentation" :alt="file.name"
-                                                                    :src="file.objectURL" width="100" height="50"
+                                                                    :src="file.objectURL" width="200" height="100"
                                                                     class="shadow-2" />
                                                             </div>
                                                             <span class="font-semibold">{{ file.name }}</span>
@@ -133,23 +129,12 @@
                                                                 @click="onRemoveTemplatingFile(file, removeFileCallback, index)"
                                                                 outlined rounded severity="danger" />
                                                         </div>
-
-                                                        <!-- Display the product image if it exists -->
-                                                        <div v-if="image"
-                                                            class="card m-0 px-6 flex flex-column border-1 surface-border align-items-center gap-3">
-                                                            <div>
-                                                                <img role="presentation" :src="image" alt="Product Image"
-                                                                    width="100" height="50" class="shadow-2" />
-                                                            </div>
-                                                            <span class="font-semibold">Product Image</span>
-                                                            <!-- Include any additional information if needed -->
-                                                        </div>
                                                     </div>
                                                 </div>
 
 
                                             </template>
-                                            <template #empty>
+                                            <template #empty v-if="model.product.id == ''">
                                                 <div class="flex align-items-center justify-content-center flex-column">
                                                     <i
                                                         class="pi pi-cloud-upload border-2 border-circle p-5 text-8xl text-400 border-400" />
@@ -157,6 +142,13 @@
                                                         files to here to upload.</p>
                                                 </div>
                                             </template>
+                                            <template #empty v-if="model.product.id != ''">
+                                                <div class="flex align-items-center justify-content-center flex-column">
+                                                    <img v-if="images" :src="images" alt="Product Image" width="200"
+                                                        height="100" class="shadow-2" />
+                                                </div>
+                                            </template>
+
                                         </FileUpload>
                                     </div>
                                 </div>
@@ -247,16 +239,19 @@
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-500">{{ products.category_id }}</div>
+                            <div class="text-sm text-gray-500">{{ products.category.name }}</div>
                         </td>
 
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {{ products.productprice }}$
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span
-                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                {{ products.IsActive }}
+                            <span :class="{
+                                'px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800': products.IsActive === 1,
+                                'px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800': products.IsActive === 2,
+                                'px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800': products.IsActive === 3
+                            }">
+                                {{ products.IsActive === 1 ? 'Active' : (products.IsActive === 2 ? 'Low Stock' : 'Out of Stock') }}
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap  text-sm font-medium">
@@ -317,7 +312,9 @@ export default {
             Category: [],
             contextMenuProduct: null,
             contextMenuCategory: null,
-            image: '',
+            images: null,
+            updateImage : null,
+            searchKey : ''
 
         };
     },
@@ -361,9 +358,7 @@ export default {
         edit(product) {
             this.showDialog();
             this.model.product = this.contextMenuProduct;
-
-            // Set the image URL for display
-            this.image = this.model.product.productimg;
+            this.images = this.getImageUrl(this.model.product.productimg);
         },
         updateData() {
             var editrecords = 'http://127.0.0.1:8000/api/products/' + this.model.product.id;
@@ -406,22 +401,41 @@ export default {
                 }
             }
         }, updateData() {
+
             if (this.contextMenuProduct) {
                 const productId = this.contextMenuProduct.id;
                 const formData = {
                     ...this.model.product,
                     productimg: this.model.product.productimg.split(',')[1] // Extract base64 data
+                    ///.split(',')[1] // Extract base64 data
                 };
+
                 var editrecords = `http://127.0.0.1:8000/api/products/${productId}/edit`;
                 axios.put(editrecords, formData)
-                    .then(
-                        ({ data }) => {
-                            this.resetForm();
-                            this.$toast.add({ severity: 'success', summary: 'Update Product Success', detail: 'This Product is update successly!', life: 3000 });
-                            this.productLoad();
-                        }
-                    );
+                    .then(({ data }) => {
+                        console.log(data);
+                        this.resetForm();
+                        this.$toast.add({ severity: 'success', summary: 'Update Product Success', detail: 'This Product is updated successfully!', life: 3000 });
+                        this.productLoad();
+                    })
+                    .catch((error) => {
+                        console.error('Error updating product:', error);
+                        this.$toast.add({ severity: 'error', summary: 'Failed', detail: 'Failed to update product', life: 3000 });
+                    });
             }
+        },
+        ressearchCategory() {
+            const apiUrl = `http://127.0.0.1:8000/api/products/search?searchTerm=${this.searchKey}`;
+
+            axios.get(apiUrl)
+                .then(response => {
+                    // Handle the response data, for example:
+                    this.result = response.data.products;
+                })
+                .catch(error => {
+                    console.error('Error during search:', error);
+                    // Handle errors or show a message to the user
+                });
         },
         showContextMenu(product) {
             this.contextMenuProduct = product;
