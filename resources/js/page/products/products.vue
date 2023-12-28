@@ -63,11 +63,12 @@
                                 <div class="col-span-2 sm:col-span-1">
                                     <label for="category"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                                    <select   id="category" v-model="model.product.category_id"
+                                    <select id="category" v-model="model.product.category_id"
                                         class="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:border-sky-600  w-full p-2.5 focus:outline-none">
 
 
-                                            <option v-for="categories in Category" :key="categories.id" :value="categories.id">{{categories.name}}</option>
+                                        <option v-for="categories in Category" :key="categories.id" :value="categories.id">
+                                            {{ categories.name }}</option>
 
 
 
@@ -88,6 +89,9 @@
                                 <div class="col-span-2">
                                     <div class="card">
                                         <Toast />
+                                        <!-- Inside your Dialog -->
+
+
                                         <FileUpload name="demo[]" @upload="onTemplatedUpload($event)"
                                             v-model="model.product.productimg" :multiple="true" accept="image/*"
                                             :maxFileSize="1000000" @select="onSelectedFiles">
@@ -111,8 +115,9 @@
                                             <template
                                                 #content="{ files, uploadedFiles, removeUploadedFileCallback, removeFileCallback }">
                                                 <div v-if="files.length > 0">
-                                                    <h5>Pending</h5>
+                                                    <h5>Complete</h5>
                                                     <div class="flex flex-wrap p-0 sm:p-5 gap-5">
+                                                        <!-- Existing file display loop -->
                                                         <div v-for="(file, index) of files"
                                                             :key="file.name + file.type + file.size"
                                                             class="card m-0 px-6 flex flex-column border-1 surface-border align-items-center gap-3">
@@ -128,29 +133,21 @@
                                                                 @click="onRemoveTemplatingFile(file, removeFileCallback, index)"
                                                                 outlined rounded severity="danger" />
                                                         </div>
-                                                    </div>
-                                                </div>
 
-                                                <div v-if="uploadedFiles.length > 0">
-                                                    <h5>Completed</h5>
-                                                    <div class="flex flex-wrap p-0 sm:p-5 gap-5">
-                                                        <div v-for="(file, index) of uploadedFiles"
-                                                            :key="file.name + file.type + file.size"
+                                                        <!-- Display the product image if it exists -->
+                                                        <div v-if="image"
                                                             class="card m-0 px-6 flex flex-column border-1 surface-border align-items-center gap-3">
                                                             <div>
-                                                                <img role="presentation" :alt="file.name"
-                                                                    :src="file.objectURL" width="100" height="50"
-                                                                    class="shadow-2" />
+                                                                <img role="presentation" :src="image" alt="Product Image"
+                                                                    width="100" height="50" class="shadow-2" />
                                                             </div>
-                                                            <span class="font-semibold">{{ file.name }}</span>
-                                                            <div>{{ formatSize(file.size) }}</div>
-                                                            <Badge value="Completed" class="mt-3" severity="success" />
-                                                            <Button icon="pi pi-times"
-                                                                @click="removeUploadedFileCallback(index)" outlined rounded
-                                                                severity="danger" />
+                                                            <span class="font-semibold">Product Image</span>
+                                                            <!-- Include any additional information if needed -->
                                                         </div>
                                                     </div>
                                                 </div>
+
+
                                             </template>
                                             <template #empty>
                                                 <div class="flex align-items-center justify-content-center flex-column">
@@ -243,8 +240,8 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 h-10 w-10">
-                                    <img class="h-10 w-10 rounded-full"
-                                        src="../../../../storage/app/images/657e9e809d72a.jpg" alt="">
+                                    <img class="h-10 w-10 rounded-full" :src="getImageUrl(products.productimg)" alt="">
+
                                 </div>
 
                             </div>
@@ -302,9 +299,9 @@ export default {
             files: [],
             totalSize: 0,
             totalSizePercent: 0,
-            categorys : {
-                name : '',
-                Description : ''
+            categorys: {
+                name: '',
+                Description: ''
             },
             model: {
                 product: {
@@ -317,10 +314,10 @@ export default {
                 }
             },
             result: [],
-            Category : [],
+            Category: [],
             contextMenuProduct: null,
             contextMenuCategory: null,
-            image: '../../../../storage/app/images/657e9e809d72a.jpg',
+            image: '',
 
         };
     },
@@ -364,6 +361,9 @@ export default {
         edit(product) {
             this.showDialog();
             this.model.product = this.contextMenuProduct;
+
+            // Set the image URL for display
+            this.image = this.model.product.productimg;
         },
         updateData() {
             var editrecords = 'http://127.0.0.1:8000/api/products/' + this.model.product.id;
@@ -456,19 +456,9 @@ export default {
         toggleMenu(event) {
             this.$refs.menu.toggle(event); // Method to toggle the PrimeVue menu
         },
-        getImageUrl(imageData) {
-            if (imageData) {
-                if (typeof imageData === 'string') {
-                    // Construct the URL based on the public directory where images are stored
-                    return `/images/${imageData}`;
-                } else {
-                    // Return a placeholder image or empty string for no image
-                    return '/asset/none-icon-1.jpg';
-                }
-            } else {
-                // Return a placeholder image or empty string for no image
-                return '/asset/none-icon-1.jpg';
-            }
+        getImageUrl(imagePath) {
+            const baseURL = 'http://127.0.0.1:8000'; // Replace with your actual APP_URL
+            return `${baseURL}/storage/${imagePath}`;
         },
         showDialog() {
             this.visible = true;

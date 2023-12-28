@@ -31,59 +31,76 @@ class ProductController extends Controller
     {
         // Function to retrieve a specific product by ID
         $products = Product::find($id);
-        if ($products) {
+        if ($products->count() > 0) {
+            $productsWithImages = $products->map(function ($product) {
+                return [
+                    'id' => $product->id,
+                    'productname' => $product->productname,
+                    'productprice' => $product->productprice,
+                    'category_id' => $product->category_id,
+                    'IsActive' => $product->IsActive,
+                    'productimg' => asset('storage/' . $product->productimg), // Generating image URL
+                ];
+            });
+
             return response()->json([
                 'status' => '200',
-                'products' => $products
-            ], 200);
+                'products' => $productsWithImages
+            ]);
         } else {
             return response()->json([
-                'status' => '500',
-                'messages' => 'Something went wrong!'
+                'status' => '404',
+                'products' => 'No Record Found!'
             ]);
         }
     }
 
     public function store(Request $request)
     {
-        // Function to create a new products
-        $validator = Validator::make($request->all(), [
+        $validatedData = $request->validate([
             'productname' => 'required|max:191',
             'productprice' => 'required',
             'category_id' => 'required',
+            'productimg' => 'required', // Assuming the image is required and received in binary format
         ]);
-        $productImg = $request->input('productimg');
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => '422',
-                'errors' => $validator->messages()
-            ]);
-        } else {
-            $binaryData = base64_decode($productImg);
-            $path = 'images/' . uniqid() . '.jpg'; // Example path and file name
-            Storage::put($path, $binaryData);
 
-            $products = Product::create([
-                'productname' => $request->productname,
+        if ($validatedData['productimg']) {
+            // Handle binary image data storage
+            $binaryImage = base64_decode($validatedData['productimg']); // Decode binary image from base64
+            $filename = uniqid() . '.png'; // Assign a unique filename or customize as needed
+
+            // Store the binary image in the 'public' disk under the 'images' directory
+            Storage::disk('public')->put('images/' . $filename, $binaryImage);
+
+            // Store other validated data in the database along with the image path
+            $product = Product::create([
+                'productname' => $validatedData['productname'],
                 'productprice' => $request->productprice,
                 'IsActive' => $request->IsActive,
-                'productimg' => $path,
-                'category_id' => $request->category_id
+                'category_id' => $request->category_id,
+                'productimg' => 'images/' . $filename, // Save the path in the database
             ]);
 
-            if ($products) {
+            if ($product) {
                 return response()->json([
                     'status' => '200',
-                    'messages' => 'Product Created Successfully!'
+                    'messages' => 'Product Created Successfully!',
                 ], 200);
             } else {
                 return response()->json([
                     'status' => '500',
-                    'messages' => 'Something went wrong!'
+                    'messages' => 'Something went wrong!',
                 ], 500);
             }
         }
+
+        return response()->json([
+            'status' => '422',
+            'errors' => 'No image provided or invalid image format!',
+        ], 422);
     }
+
+
 
     public function update(Request $request, $id)
     {
@@ -130,7 +147,7 @@ class ProductController extends Controller
 
         $products = Product::find($id);
         if ($products) {
-            $products -> delete();
+            $products->delete();
             return response()->json([
                 'status' => '200',
                 'messages' => 'Product Deleted Successfully!'

@@ -139,8 +139,8 @@
 
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    <tr v-for="products in result" :key="products.id">
+                <tbody  class="bg-white divide-y divide-gray-200">
+                    <tr  v-for="products in result" :key="products.id">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {{ products.id }}
                         </td>
@@ -208,7 +208,7 @@ export default {
 
                 }
             },
-            result: [],
+            result: null,
             contextMenuProduct: null,
             searchKey: '',
             saveFlex: 'Add New Customer'
@@ -239,7 +239,7 @@ export default {
             axios.get(page)
                 .then(
                     ({ data }) => {
-                        console.log(data.customers);
+                        console.log("customer = " ,data.customers);
                         this.result = data.customers;
                     }
                 )
@@ -262,11 +262,11 @@ export default {
         },
         save() {
             if (this.model.product.id == '') {
-              
+
                 this.saveData();
             }
             else {
-              
+
                 this.updateData();
             }
             this.closeDialog();
@@ -369,13 +369,13 @@ export default {
             if (this.contextMenuProduct) {
                 this.saveFlex = 'Update Customer'
             }
-  
+
             this.visible = true;
         },
         closeDialog() {
             this.saveFlex = 'Add New Customer'
             this.visible = false;
-            
+
 
         },
         toggle(event) {
