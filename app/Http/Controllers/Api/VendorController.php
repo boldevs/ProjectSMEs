@@ -139,4 +139,29 @@ class VendorController extends Controller
         }
 
     }
+
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+
+        // Perform the search query
+        $vendors = Vendor::where('vendorname', 'like', '%' . $keyword . '%')
+                        ->orWhere('vendorcontact', 'like', '%' . $keyword . '%')
+                        ->orWhere('vendor_type', 'like', '%' . $keyword . '%')
+                        ->orWhere('vendor_address', 'like', '%' . $keyword . '%')
+                        // Add more fields as needed
+                        ->get();
+
+        if ( $vendors->count() > 0) {
+            return response()->json([
+                'status' => '200',
+                'customers' =>  $vendors
+            ]);
+        } else {
+            return response()->json([
+                'status' => '404',
+                'message' => 'No Records Found!'
+            ]);
+        }
+    }
 }
