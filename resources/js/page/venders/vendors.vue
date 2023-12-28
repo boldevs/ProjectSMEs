@@ -29,7 +29,7 @@
 
                         <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                             <h3 class="text-lg font-semibold text-gray-900">
-                                Create Customer
+                                Create Vendors
                             </h3>
                             <button type="button" @click="closeDialog"
                                 class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -139,9 +139,11 @@
 
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                
+                <tbody class="bg-white divide-y divide-gray-200"  v-if="result != 'No Record Fonud!'">
+                    
                     <tr v-for="products in result" :key="products.id">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" >
                             {{ products.id }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -167,6 +169,9 @@
                     </tr>
                 </tbody>
             </table>
+            <div v-if="result == 'No Record Fonud!'" class="my-10 flex items-center justify-center">
+                <p class="text-lg text-gray-500">No Record found!!</p>
+            </div>
             <div class="card justify-content-center hidden">
                 <Button type="button" icon="pi pi-ellipsis-v" aria-haspopup="true" aria-controls="overlay_tmenu" />
                 <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" />
