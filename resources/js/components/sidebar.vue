@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="  py-3 rounded-md cursor-pointer text-white hover:text-gray-300">
-                    <router-link to="/Item" class="px-2 flex space-x-2"><span class="pi pi-building"
+                    <router-link to="/ItemForm" class="px-2 flex space-x-2"><span class="pi pi-building"
                             v-tooltip.right="'Item'"></span> <span v-show="dataOpenSideBar">Item</span></router-link>
                 </div>
                 <div class="  py-3 rounded-md cursor-pointer text-white hover:text-gray-300">

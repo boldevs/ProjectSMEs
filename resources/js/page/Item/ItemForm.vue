@@ -15,7 +15,7 @@
             <div>
                 <button
                     class="text-white inline-flex items-center bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-6 my-2 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800  "
-                    @click="visible = true" v-tooltip.left="'Add New Product'">
+                    @click="visible = true" v-tooltip.left="'Add New Customers'">
                     <i class="pi pi-plus items-center flex justify-center"></i>
                 </button>
                 <button
@@ -28,8 +28,8 @@
                     <div class="m-0 h-[600px]">
 
                         <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                Create New Product
+                            <h3 class="text-lg font-semibold text-gray-900">
+                                Create Customer
                             </h3>
                             <button type="button" @click="closeDialog"
                                 class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -46,22 +46,22 @@
                         <form class="p-4 md:p-5" @submit.prevent="save">
                             <div class="grid gap-4 mb-4 grid-cols-2">
                                 <div class="col-span-2">
-                                    <label for="name"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                                    <input type="text" v-model="model.product.name"
+                                    <!-- Item Name -->
+                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Item
+                                        Name</label>
+                                    <input type="text" v-model="model.product.item_name"
                                         class="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:border-sky-600  w-full p-2.5 focus:outline-none "
-                                        placeholder="Type product name" required="">
+                                        placeholder="Input Item Name" required="">
                                 </div>
-
 
                                 <div class="col-span-2">
-                                    <label for="description"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
-                                        Description</label>
-                                    <textarea id="description" rows="4" v-model="model.product.Description"
-                                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border-2 focus:border-sky-600  focus:outline-none"
-                                        placeholder="Write product description here"></textarea>
+                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Item
+                                        Price</label>
+                                    <input type="text" v-model="model.product.item_price"
+                                        class="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:border-sky-600  w-full p-2.5 focus:outline-none "
+                                        placeholder="Input Item Price " required="">
                                 </div>
+
                             </div>
                             <button type="submit"
                                 class="text-white inline-flex items-center bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -71,7 +71,7 @@
                                         d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                         clip-rule="evenodd"></path>
                                 </svg>
-                                Add new Cetegory
+                                {{ this.saveFlex }}
                             </button>
                         </form>
 
@@ -96,16 +96,18 @@
                     <tr>
                         <th scope="col"
                             class="px-6 py-3 text-left text-xs font-medium  text-white uppercase tracking-wider">
-                            Code
+                            ItemId
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                            Name
+                            Item Name
                         </th>
 
                         <th scope="col"
                             class="px-6 py-3 text-left text-xs font-medium  text-white uppercase tracking-wider">
-                            Description
+                            Item Price
                         </th>
+
+                        <!-- Action-->
                         <th scope="col"
                             class="px-6 py-3 text-left text-xs font-medium  text-white uppercase tracking-wider">
 
@@ -113,18 +115,20 @@
 
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody class="bg-white divide-y divide-gray-200" v-if="result != 'No Record Fonud!'">
                     <tr v-for="products in result" :key="products.id">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {{ products.id }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            {{ products.name }}
+                            {{ products.item_name}}
                         </td>
 
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-500">{{ products.Description }}</div>
+                            <div class="text-sm text-gray-500">
+                                {{ products.item_price }}</div>
                         </td>
+
                         <td class="px-6 py-4 whitespace-nowrap  text-sm font-medium">
                             <div class="card flex justify-content-center">
                                 <Button type="button" icon="pi pi-ellipsis-v" @click="showContextMenu(products)" />
@@ -134,6 +138,9 @@
                     </tr>
                 </tbody>
             </table>
+            <div v-if="result == 'No Record Fonud!'" class="my-10 flex items-center justify-center">
+                <p class="text-lg text-gray-500">No Record found!!</p>
+            </div>
             <div class="card justify-content-center hidden">
                 <Button type="button" icon="pi pi-ellipsis-v" aria-haspopup="true" aria-controls="overlay_tmenu" />
                 <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" />
@@ -142,6 +149,7 @@
         </div>
     </div>
 </template>
+
 <script>
 import axios from 'axios'
 export default {
@@ -167,14 +175,15 @@ export default {
             model: {
                 product: {
                     id: '',
-                    name: '',
-                    description: ''
+                    item_name: '',
+                    item_price: '',
 
                 }
             },
-            result: [],
+            result: null,
             contextMenuProduct: null,
-            searchKey: ''
+            searchKey: '',
+            saveFlex: 'Add New Items'
 
 
         };
@@ -183,24 +192,25 @@ export default {
         this.productLoad();
     },
     mounted() {
-
+       
     },
     methods: {
+
 
         resetForm() {
             this.model.product = {
                 id: '',
-                name: '',
-                description: ''
+                item_name: '',
+                item_price: '',
             }
         },
         productLoad() {
-            var page = "http://127.0.0.1:8000/api/categories";
+            var page = "http://127.0.0.1:8000/api/items";
             axios.get(page)
                 .then(
                     ({ data }) => {
-                        console.log(data.Category);
-                        this.result = data.Category;
+                        console.log("Item = ", data.items);
+                        this.result = data.items;
                     }
                 )
         },
@@ -210,7 +220,7 @@ export default {
             this.model.product = this.contextMenuProduct;
         },
         updateData() {
-            var editrecords = 'http://127.0.0.1:8000/api/categories/' + this.model.product.id;
+            var editrecords = 'http://127.0.0.1:8000/api/items/' + this.model.product.id;
             axios.put(editrecords, this.model.product.id)
                 .then(
                     ({ data }) => {
@@ -222,9 +232,11 @@ export default {
         },
         save() {
             if (this.model.product.id == '') {
+
                 this.saveData();
             }
             else {
+
                 this.updateData();
             }
             this.closeDialog();
@@ -232,11 +244,11 @@ export default {
         saveData() {
             try {
 
-                axios.post("http://127.0.0.1:8000/api/categories", this.model.product);
+                axios.post("http://127.0.0.1:8000/api/items", this.model.product);
 
                 this.resetForm();
                 this.productLoad();
-                this.$toast.add({ severity: 'success', summary: 'Update Product Success', detail: 'This Product is update successly!', life: 3000 });
+                this.$toast.add({ severity: 'success', summary: 'Update Product Success', detail: 'This Product is update Successfully!', life: 3000 });
 
 
             } catch (error) {
@@ -251,7 +263,7 @@ export default {
             if (this.contextMenuProduct) {
                 const productId = this.contextMenuProduct.id;
 
-                var editrecords = `http://127.0.0.1:8000/api/categories/${productId}`;
+                var editrecords = `http://127.0.0.1:8000/api/items/${productId}`;
                 axios.put(editrecords, this.model.product)
                     .then(
                         ({ data }) => {
@@ -273,7 +285,7 @@ export default {
         removeProduct() {
             if (this.contextMenuProduct) {
                 const productId = this.contextMenuProduct.id;
-                const url = `http://127.0.0.1:8000/api/categories/${productId}`;
+                const url = `http://127.0.0.1:8000/api/items/${productId}/delete`;
 
                 axios
                     .delete(url)
@@ -292,12 +304,12 @@ export default {
             }
         },
         ressearchCategory() {
-            const apiUrl = `http://127.0.0.1:8000/api/categories/search?keyword=${this.searchKey}`;
+            const apiUrl = `http://127.0.0.1:8000/api/items/search?keyword=${this.searchKey}`;
 
             axios.get(apiUrl)
                 .then(response => {
                     // Handle the response data, for example:
-                    this.result = response.data.categories;
+                    this.result = response.data.items;
                 })
                 .catch(error => {
                     console.error('Error during search:', error);
@@ -323,10 +335,17 @@ export default {
             }
         },
         showDialog() {
+
+            if (this.contextMenuProduct) {
+                this.saveFlex = 'Update Item'
+            }
+
             this.visible = true;
         },
         closeDialog() {
+            this.saveFlex = 'Add New Item'
             this.visible = false;
+
 
         },
         toggle(event) {

@@ -12,6 +12,7 @@ import Category from '../page/category/category.vue'
 import Sale from '../page/sale/sale.vue';
 import Customer from '../page/customers/customers.vue';
 import Vender from '../page/venders/vendors.vue';
+import Item from '../page/Item/ItemForm.vue';
 
 // 2. Define some routes
 // Each route should map to a component.
@@ -27,7 +28,8 @@ const routes = [
             { path: '/category', component: Category },
             { path: '/sale', component: Sale },
             { path: '/customers', component: Customer },
-            { path: '/vendors', component: Vender }
+            { path: '/vendors', component: Vender },
+            {path:'/ItemForm',component:Item}
             // ...other sub routes
         ],
     },
