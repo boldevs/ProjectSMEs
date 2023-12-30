@@ -47,8 +47,7 @@ class ItemController extends Controller
         // Function to create a new items
         $validator = Validator::make($request->all(), [
             'item_name' => 'required|max:191',
-            'item_price' => 'required',
-            'item_img' => 'required',
+            'item_price' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -60,7 +59,6 @@ class ItemController extends Controller
             $items = Item::create([
                 'item_name' => $request->item_name,
                 'item_price' => $request->item_price,
-                'item_img' => $request->item_img,
 
             ]);
 
@@ -84,8 +82,6 @@ class ItemController extends Controller
         $validator = Validator::make($request->all(), [
             'item_name' => $request->item_name,
             'item_price' => $request->item_price,
-            'item_img' => $request->item_img,
-
         ]);
 
         if ($validator->fails()) {
@@ -99,7 +95,6 @@ class ItemController extends Controller
                 $items->update([
                     'item_name' => $request->item_name,
                     'item_price' => $request->item_price,
-                    'item_img' => $request->item_img,
 
                 ]);
                 return response()->json([
