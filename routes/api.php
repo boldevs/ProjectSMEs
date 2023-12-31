@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\SupplyerController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\SaleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +64,13 @@ Route::get('/categories/search', [CategoryController::class, 'search']);
 Route::get('/categories/{id}', [CategoryController::class, 'show']);
 Route::put('/categories/{id}', [CategoryController::class, 'update']);
 Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+
+Route::get('/sales', [SaleController::class, 'index']);
+Route::post('/sales', [SaleController::class, 'store']);
+Route::get('/sales/search', [SaleController::class, 'search']);
+Route::get('/sales/{id}', [SaleController::class, 'show']);
+Route::put('/sales/{id}', [SaleController::class, 'update']);
+Route::delete('/sales/{id}', [SaleController::class, 'destroy']);
 
 
 

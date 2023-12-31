@@ -59,7 +59,6 @@ class ItemController extends Controller
             $items = Item::create([
                 'item_name' => $request->item_name,
                 'item_price' => $request->item_price,
-
             ]);
 
             if ($items) {

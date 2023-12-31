@@ -16,6 +16,8 @@ class Sale extends Model
         'product_id',
         'qty',
         'customer_id',
-        'status'
+        'status',
+        'discount',
+        'particular_client'
     ];
 }
