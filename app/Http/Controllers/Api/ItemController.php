@@ -48,7 +48,6 @@ class ItemController extends Controller
         $validator = Validator::make($request->all(), [
             'item_name' => 'required|max:191',
             'item_price' => 'required',
-            'item_img' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -60,8 +59,6 @@ class ItemController extends Controller
             $items = Item::create([
                 'item_name' => $request->item_name,
                 'item_price' => $request->item_price,
-                'item_img' => $request->item_img,
-
             ]);
 
             if ($items) {
@@ -84,7 +81,6 @@ class ItemController extends Controller
         $validator = Validator::make($request->all(), [
             'item_name' => $request->item_name,
             'item_price' => $request->item_price,
-            'item_img' => $request->item_img,
 
         ]);
 

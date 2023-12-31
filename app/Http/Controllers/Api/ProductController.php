@@ -191,10 +191,14 @@ class ProductController extends Controller
         if ($request->has('searchTerm')) {
             $searchTerm = $request->input('searchTerm');
 
-            // Filter products based on the product name
-            $query->where('productname', 'like', '%' . $searchTerm . '%');
+            // Filter products based on the product name or category name
+            $query->where(function ($query) use ($searchTerm) {
+                $query->where('productname', 'like', '%' . $searchTerm . '%')
+                      ->orWhereHas('category', function ($query) use ($searchTerm) {
+                          $query->where('name', 'like', '%' . $searchTerm . '%');
+                      });
+            });
         }
-
         // You can add more conditions for filtering based on other attributes if needed
 
         // Get the filtered products
