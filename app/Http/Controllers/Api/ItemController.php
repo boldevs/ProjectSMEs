@@ -76,40 +76,39 @@ class ItemController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        // Function to update a Item by ID
-        $validator = Validator::make($request->all(), [
-            'item_name' => $request->item_name,
-            'item_price' => $request->item_price,
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'item_name' => 'required',
+        'item_price' => 'required|numeric',
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => '422',
-                'errors' => $validator->messages()
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => 422,
+            'errors' => $validator->messages()
+        ], 422);
+    } else {
+        $item = Item::find($id);
+        if ($item) {
+            $item->update([
+                'item_name' => $request->item_name,
+                'item_price' => $request->item_price,
             ]);
+            
+            return response()->json([
+                'status' => 200,
+                'message' => 'Item updated successfully!',
+                'item' => $item // Optionally, you can return the updated item
+            ], 200);
         } else {
-            $items = Item::find($id);
-            if ($items) {
-                $items->update([
-                    'item_name' => $request->item_name,
-                    'item_price' => $request->item_price,
-
-                ]);
-                return response()->json([
-                    'status' => '200',
-                    'messages' => 'Item update Successfully!'
-                ], 200);
-
-            } else {
-                return response()->json([
-                    'status' => '404',
-                    'items' => 'No Record Fonud!'
-                ]);
-            }
-
+            return response()->json([
+                'status' => 404,
+                'message' => 'No record found!'
+            ], 404);
         }
     }
+}
+
 
     public function destroy($id)
     {
