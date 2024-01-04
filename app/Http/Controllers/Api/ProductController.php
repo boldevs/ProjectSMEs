@@ -77,7 +77,6 @@ class ProductController extends Controller
             $product = Product::create([
                 'productname' => $validatedData['productname'],
                 'productprice' => $request->productprice,
-                'IsActive' => $request->IsActive,
                 'category_id' => $request->category_id,
                 'productimg' => 'images/' . $filename, // Save the path in the database
             ]);

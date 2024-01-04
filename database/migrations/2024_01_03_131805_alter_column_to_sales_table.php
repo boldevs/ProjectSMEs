@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('sales', function (Blueprint $table) {
-            // Add the 'discount' field to the 'sales' table
-            $table->string('particular_client')->nullable()->after('customer_id')->change();
+            $table->dateTime('SDate')->nullable()->change();
         });
     }
 
@@ -23,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('sales', function (Blueprint $table) {
-
+            $table->dateTime('SDate')->change();
         });
     }
 };

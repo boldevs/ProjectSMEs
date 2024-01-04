@@ -14,8 +14,7 @@
                             <div class="flex items-center justify-between">
                                 <div v-if="selectedCustomer === '2'">
                                     <select v-model="selectedClientId" placeholder="Select Customer"
-                                        class="w-[250px] text-centers border-2 border-sky-600 text-gray-900 text-sm rounded-lg  bor focus:ring-blue-500 focus:border-blue-500 block outline-none w-full px-6 p-2.5">
-
+                                        class="w-[250px] text-centers border-2 border-sky-600 text-gray-900 text-sm rounded-lg  bor focus:ring-blue-500 focus:border-blue-500 block outline-none  px-6 p-2.5">
                                         <option v-for="client in clients" :key="client.id" :value="client.id">{{
                                             client.customer_name }}</option>
                                     </select>
@@ -146,14 +145,19 @@
                     </div>
                     <div class="px-5 mt-5 flex items-center justify-end">
 
-                        <div v-if="paidWithCash"
+                        <div v-if="paidWithCash" @click="generatePDF"
                             class="px-4 py-4 rounded-md shadow-lg text-center bg-sky-500 text-white font-semibold cursor-pointer  mx-5">
                             Print Preview
                         </div>
+
                         <div
                             class="px-4 py-4 rounded-md shadow-lg text-center bg-sky-500 text-white font-semibold cursor-pointer">
                             <router-link to="/salelist">
-                                Transaction
+                                <div class="flex items-center justify-center">
+                                    <span><img src="../../../asset/invoice (2).png" class="" alt=""></span>
+                                    <p>Transaction</p>
+                                </div>
+
                             </router-link>
 
                         </div>
@@ -195,7 +199,7 @@ export default {
             selectedCustomer: '1', // To hold the selected customer type (1 or 2)
             selectedClientId: null, // To hold the selected client's ID
             clients: [],
-            currentDate: ''
+
         };
     },
     computed: {
@@ -219,9 +223,11 @@ export default {
         }
     },
     created() {
-        this.productLoad()
+        this.productLoad();
+
     },
     mounted() {
+
         const storedItem = localStorage.getItem('selectedItem');
         if (storedItem) {
             this.selectedItem = storedItem;
@@ -317,11 +323,11 @@ export default {
                 this.currentOrder[index].quantity--;
             }
         },
+
         async saveData() {
             try {
-                const currentDate = new Date();
-      // Format the date and time as needed (for example, using toLocaleString)
-                this.currentDate = currentDate.toLocaleString(); // Adjust the formatting as per your requirements
+                const currentTime = new Date().toISOString();
+                const formattedDateTime = currentTime.replace('T', ' ').substring(0, 19); // Extract and format as 'YYYY-MM-DD HH:MM:SS'
                 const discountPerSale = this.discountAmount;
                 const requests = this.currentOrder.map(async (item) => {
                     const formData = {
@@ -330,7 +336,7 @@ export default {
                         qty: item.quantity,
                         customer_id: this.selectedCustomer,
                         status: '',
-                        SDate : this.currentDate,
+                        SDate: formattedDateTime,
                         user_id: '',
                         discount: discountPerSale,
                         particular_client: this.selectedClientId
@@ -371,6 +377,31 @@ export default {
                 // For particular client, you might want to perform additional actions here
                 // Set customer_id to 2 for particular client
                 this.sale.customer_id = 2;
+            }
+        },
+        async generatePDF() {
+            try {
+                const response = await axios.post('http://127.0.0.1:8000/api/invoice', {}, {
+                    responseType: 'blob'
+                });
+                // Create a blob URL for the PDF
+                const blob = new Blob([response.data], { type: 'application/pdf' });
+
+                // Convert the blob into a URL
+                const url = URL.createObjectURL(blob);
+
+                // Open the PDF in a hidden iframe
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+                iframe.src = url;
+
+                // Trigger the print dialog when the iframe has loaded the PDF
+                iframe.onload = () => {
+                    iframe.contentWindow.print(); // Open print dialog
+                };
+            } catch (error) {
+                console.error('Error generating PDF:', error);
             }
         }
     }

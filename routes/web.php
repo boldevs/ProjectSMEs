@@ -17,3 +17,7 @@ Route::get('/{any}', function () {
     return view('app');
 })->where("any",".*");
 
+// Route::get('/invoiceview', function(){
+//     return view('template/invoice');
+// });
+

@@ -221,7 +221,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody class="bg-white divide-y divide-gray-200"  v-if="result != 'No Record Fonud!'">
                     <tr v-for="products in result" :key="products.id">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {{ products.id }}

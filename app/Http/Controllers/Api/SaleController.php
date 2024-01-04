@@ -58,6 +58,7 @@ class SaleController extends Controller
         // Create the sale record, using defaults if not provided in the request
         $sales = Sale::create([
             'SId' => $request->SId,
+            'SDate' => $request->SDate,
             'user_id' => $request->user_id ?? $defaultUserId,
             'product_id' => $request->product_id,
             'qty' => $request->qty,
@@ -143,5 +144,30 @@ class SaleController extends Controller
 
         // Return the results or process them further
         return response()->json($results);
+    }
+    public function findBySId(Request $request, $sid)
+    {
+        try {
+            $invoiceData = Sale::select(
+                    'sales.SId',
+                    'sales.SDate',
+                    'products.productname',
+                    'customers.customer_name',
+                    'cutomer_type.stand_for',
+                    'users.name',
+                    'sales.qty as qty',
+                    'products.productprice as amount'
+                )
+                ->leftJoin('products', 'sales.product_id', '=', 'products.id')
+                ->leftJoin('customers', 'sales.particular_client', '=', 'customers.id')
+                ->leftJoin('cutomer_type', 'sales.customer_id', '=', 'cutomer_type.id')
+                ->leftJoin('users', 'sales.user_id', '=', 'users.id')
+                ->where('sales.SId', $sid)
+                ->get();
+
+            return response()->json($invoiceData);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Could not fetch data.'], 500);
+        }
     }
 }

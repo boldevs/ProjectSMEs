@@ -1,5 +1,7 @@
 <template>
     <div>
+
+
         <div class="relative my-2 float-right">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center mr-5 ">
@@ -11,6 +13,18 @@
                     </div>
                 </div>
                 </div>
+
+                <div v-if="loading" class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-80 z-50">
+                    <div class="flex items-center space-x-2">
+                        <div aria-label="Loading..." role="status">
+                            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" class="animate-spin w-12 h-12 text-gray-500">
+                                <path d="M12 3v3m6.366-.366-2.12 2.12M21 12h-3m.366 6.366-2.12-2.12M12 21v-3m-6.366.366 2.12-2.12M3 12h3m-.366-6.366 2.12 2.12"></path>
+                            </svg>
+                        </div>
+                        <span class="text-lg font-medium text-gray-500">Loading...</span>
+                    </div>
+                </div>
+
 
         <table class="min-w-full divide-y bg-sky-600 overflow-x-auto">
             <thead class="bg-sky-600">
@@ -98,6 +112,7 @@ export default {
                 {
                     label: 'Preview',
                     icon: 'pi pi-print',
+                    command: (products) => this.generatePDF(products)
 
                 },
                 {
@@ -111,7 +126,8 @@ export default {
             contextMenuProduct: null,
             images: null,
             updateImage : null,
-            searchKey : ''
+            searchKey : '',
+            loading : false,
 
         };
     },
@@ -143,6 +159,34 @@ export default {
         toggle(event) {
             this.$refs.menu.toggle(event);
         },
+        async generatePDF(product) {
+            this.loading = true;
+            try {
+                const response = await axios.post('http://127.0.0.1:8000/api/invoice', {}, {
+                    responseType: 'blob'
+                });
+                // Create a blob URL for the PDF
+                const blob = new Blob([response.data], { type: 'application/pdf' });
+
+                // Convert the blob into a URL
+                const url = URL.createObjectURL(blob);
+
+                // Open the PDF in a hidden iframe
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+                iframe.src = url;
+
+                // Trigger the print dialog when the iframe has loaded the PDF
+                iframe.onload = () => {
+                    iframe.contentWindow.print(); // Open print dialog
+                    this.loading = false;
+                };
+            } catch (error) {
+                this.loading = false;
+                console.error('Error generating PDF:', error);
+            }
+        }
     }
     // Other component logic
 };
