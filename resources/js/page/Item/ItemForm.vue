@@ -121,7 +121,7 @@
                             {{ products.id }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            {{ products.item_name}}
+                            {{ products.item_name }}
                         </td>
 
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -146,6 +146,7 @@
                 <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" />
             </div>
             <Toast />
+
         </div>
     </div>
 </template>
@@ -192,7 +193,7 @@ export default {
         this.productLoad();
     },
     mounted() {
-       
+
     },
     methods: {
 
@@ -263,7 +264,7 @@ export default {
             if (this.contextMenuProduct) {
                 const productId = this.contextMenuProduct.id;
 
-                var editrecords = `http://127.0.0.1:8000/api/items/${productId}`;
+                var editrecords = `http://127.0.0.1:8000/api/items/${productId}/edit`;
                 axios.put(editrecords, this.model.product)
                     .then(
                         ({ data }) => {
@@ -279,8 +280,12 @@ export default {
             console.log("Product Items : ", this.contextMenuProduct);
             this.$refs.menu.toggle(event);
         },
-        confirmDelete(products) {
-            this.removeProduct();
+        confirmDelete(product) {
+            // Show a confirmation dialog/modal to confirm deletion, then call removeProduct
+            // You can use a UI framework modal or create a custom confirmation dialog
+            if (confirm('Are you sure you want to delete this item?')) {
+                this.removeProduct();
+            }
         },
         removeProduct() {
             if (this.contextMenuProduct) {
