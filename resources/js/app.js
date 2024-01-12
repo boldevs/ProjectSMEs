@@ -49,6 +49,16 @@ axios.interceptors.request.use(async config => {
     return Promise.reject(errors)
 })
 
+axios.interceptors.response.use(async (response) => {
+    if (response.status === 400) {
+        router.push({ name: 'unauthorized' });
+    }
+    return response;
+},
+(error) => {
+    return Promise.reject(error);
+});
+
 const app = createApp({
     components: {
         App

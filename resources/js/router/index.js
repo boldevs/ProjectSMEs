@@ -5,6 +5,7 @@ import { createRouter, createWebHistory } from "vue-router";
 // 1. Define route components.
 // These can be imported from other files
 import Login from '../page/auth/login.vue'
+import Unauthorized from '../page/auth/unauthorized.vue'
 import Master from "../page/layout/master.vue";
 import Dashboard from '../page/dashboard.vue';
 import Porduct from '../page/products/products.vue';
@@ -29,6 +30,11 @@ const routes = [
         beforeEnter: (to, from, next) => {
             guest({ next, router })
         }
+    },
+    {
+        path: '/unauthorized',
+        name: 'unauthorized',
+        component: Unauthorized
     },
     {
         path: '/', redirect: '/dashboard', component: Master,
