@@ -199,4 +199,16 @@
     </div>
 </div></template>
 
+
+<script>
+export default {
+    setup()
+    {
+        return {
+            testing : 'this is testing'
+        }
+    }
+}
+</script>
+
 <style></style>
