@@ -14,7 +14,6 @@ class Product extends Model
         'productname',
         'productprice',
         'productimg',
-        'IsActive',
         'category_id'
     ];
 

@@ -1,8 +1,11 @@
+import 'primevue/resources/themes/lara-light-green/theme.css'
+import "primevue/resources/primevue.min.css"; /* Deprecated */
 import {createApp} from 'vue/dist/vue.esm-bundler.js'
 
 import App from './App.vue';
 import router from './router';
 import ToastService from 'primevue/toastservice';
+import ConfirmationService from 'primevue/confirmationservice';
 
 import PrimeVue from 'primevue/config';
 import 'primevue/resources/themes/tailwind-light/theme.css';
@@ -24,13 +27,14 @@ import Dialog from 'primevue/dialog';
 import Tooltip from 'primevue/tooltip';
 import Toast from 'primevue/toast';
 import FileUpload from 'primevue/fileupload';
+import ConfirmDialog from 'primevue/confirmdialog';
 
 const app = createApp({
     components : {
         App
     }
 });
-
+app.component('ConfirmDialog', ConfirmDialog);
 app.component('InputText', InputText);
 app.component('Toast', Toast);
 app.component('TieredMenu', TieredMenu);
@@ -47,6 +51,7 @@ app.directive('ColumnGroup', ColumnGroup);
 app.directive('Row', Row);
 
 app.use(ToastService)
+app.use(ConfirmationService);
 app.use(router)
 app.use(PrimeVue);
 app.mount('#app')

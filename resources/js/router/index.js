@@ -14,13 +14,14 @@ import Customer from '../page/customers/customers.vue';
 import Vender from '../page/venders/vendors.vue';
 import Item from '../page/Item/ItemForm.vue';
 import SaleList from '../page/sale/saleslist.vue';
+import Purchase from '../page/purchase/index.vue';
 
 // 2. Define some routes
 // Each route should map to a component.
 // We'll talk about nested routes later.
 const routes = [
     {
-        path: '/', redirect: '/dashboard'  ,component: Master,
+        path: '/', redirect: '/sale'  ,component: Master,
         children: [
             // UserHome will be rendered inside User's <router-view>
             // when /user/:id is matched
@@ -31,7 +32,8 @@ const routes = [
             { path: '/customers', component: Customer },
             { path: '/vendors', component: Vender },
             {path:'/ItemForm',component:Item},
-            { path: '/salelist', component: SaleList }
+            { path: '/salelist', component: SaleList },
+            { path: '/purchase', component: Purchase }
             // ...other sub routes
         ],
     },

@@ -7,8 +7,8 @@
                     <!-- header -->
                     <div class="flex flex-row justify-between items-center px-5 mt-5 ">
                         <div class="text-gray-800">
-                            <div class="font-bold text-xl">NN Coffee</div>
-                            <span class="text-xs">Location SiemReap, Psa Samki</span>
+                            <div class="font-bold text-xl">Purchase Process</div>
+                            <span class="text-xs">List Item</span>
                         </div>
                         <div class="flex items-center ">
                             <div class="flex items-center justify-between">
@@ -16,7 +16,7 @@
                                     <select v-model="selectedClientId" placeholder="Select Customer"
                                         class="w-[250px] text-centers border-2 border-sky-600 text-gray-900 text-sm rounded-lg  bor focus:ring-blue-500 focus:border-blue-500 block outline-none  px-6 p-2.5">
                                         <option v-for="client in clients" :key="client.id" :value="client.id">{{
-                                            client.customer_name }}</option>
+                                            client.vendorname }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -24,40 +24,28 @@
                                 <div class="mb-1">
                                     <input type="radio" class="mx-2" id="generalCustomer" value="1"
                                         v-model="selectedCustomer">
-                                    <label for="generalCustomer">General Customer</label>
+                                    <label for="generalCustomer">General Vendor</label>
                                 </div>
                                 <div>
                                     <input type="radio" class="mx-2" id="particularClient" value="2"
                                         v-model="selectedCustomer">
-                                    <label for="particularClient">Particular Client</label>
+                                    <label for="particularClient">Particular Vendor</label>
                                 </div>
                             </div>
                         </div>
 
                     </div>
                     <!-- end header -->
-                    <!-- categories -->
-                    <div class="mt-5 flex flex-row px-5" @click="filterCategory">
-                        <span class="px-5 py-1 rounded-2xl text-sm mr-4 cursor-pointer"
-                            :class="{ 'bg-sky-500 text-white': selectedItem === 'All items' }"
-                            @click="selectItem('All items')">
-                            All items
-                        </span>
-                        <span v-for="item in Category" :key="item.id"
-                            class="px-5 py-1 rounded-2xl text-sm font-semibold mr-4 cursor-pointer"
-                            :class="{ 'bg-sky-500 text-white': selectedItem === item.name }" @click="selectItem(item.name)">
-                            {{ item.name }}
-                        </span>
-                    </div>
-                    <!-- end categories -->
+
+
                     <!-- products -->
-                    <div class="grid grid-cols-3 gap-4 px-5 mt-5 overflow-y-auto  cursor-pointer" v-if="products != 'No matching products found!'">
+                    <div class="grid grid-rows-1 gap-4 px-5 mt-5 overflow-y-auto  cursor-pointer" v-if="products != 'No matching products found!'">
                         <div class="px-3 py-3 flex flex-col border border-gray-200 rounded-md h-32 justify-between" v-for="item in products" :key="item.id" @click="addToOrder(item)">
                             <div class="flex justify-between items-center">
-                                <div class="font-bold text-gray-800">{{ item.productname }}</div>
-                                <span class="font-bold text-lg">{{ item.productprice }}$</span>
+                                <div class="font-bold text-gray-800">{{ item.item_name }}</div>
+                                <span class="font-bold text-lg">{{ item.item_price }}$</span>
                             </div>
-                            <img :src="getImageUrl(item.productimg)" class="h-14 w-14 object-cover rounded-md" alt="">
+
                         </div>
                     </div>
 
@@ -83,7 +71,6 @@
                         <div class="flex flex-row justify-between items-center mb-4"
                             v-for="(orderItem, index) in currentOrder" :key="orderItem.id">
                             <div class="flex flex-row items-center w-2/5">
-                                <img :src="getImageUrl(orderItem.image)" class="w-10 h-10 object-cover rounded-md" alt="">
                                 <span class="ml-4 font-semibold text-sm">{{ orderItem.name }}</span>
                             </div>
 
@@ -103,7 +90,7 @@
                     <!-- totalItems -->
                     <div class="px-5 mt-5">
                         <div class="py-4 rounded-md shadow-lg">
-                            <div class=" px-4 flex justify-between ">
+                            <!-- <div class=" px-4 flex justify-between ">
                                 <span class="font-semibold text-sm">Subtotal</span>
                                 <span class="font-bold">${{ subtotal.toFixed(2) }}</span>
                             </div>
@@ -112,10 +99,10 @@
                                 <input class="bg-transparent border-none outline-none text-right font-bold py-2"
                                     id="discountInput" type="number" v-model="discountValue"
                                     placeholder="Enter discount amount" />
-                            </div>
+                            </div> -->
 
                             <div class="border-t-2 mt-3 py-2 px-4 flex items-center justify-between">
-                                <span class="font-semibold text-2xl">Total (with discount)</span>
+                                <span class="font-semibold text-2xl">Total</span>
                                 <span class="font-bold text-2xl">${{ totalWithDiscount.toFixed(2) }}</span>
                             </div>
                         </div>
@@ -168,12 +155,12 @@ export default {
         return {
 
             sale: {
-                SDate: '',
-                SId: '',
+                PDate: '',
+                PId: '',
                 user_id: '',
-                product_id: '',
+                item_id: '',
                 qty: '',
-                customer_id: '',
+                vendor_id: '',
                 status: ''
             },
             paidWithCash: false,
@@ -225,27 +212,22 @@ export default {
     },
     methods: {
         productLoad() {
-            var page = "http://127.0.0.1:8000/api/products";
+            var page = "http://127.0.0.1:8000/api/items";
             axios.get(page)
                 .then(
                     ({ data }) => {
-                        this.products = data.products;
+                        this.products = data.items;
+                        console.log(this.products)
                     }
                 )
 
-            var pageCategory = "http://127.0.0.1:8000/api/categories";
-            axios.get(pageCategory)
-                .then(
-                    ({ data }) => {
-                        this.Category = data.Category;
-                    }
-                )
 
-            var customer = "http://127.0.0.1:8000/api/customers";
+
+            var customer = "http://127.0.0.1:8000/api/vendors";
             axios.get(customer)
                 .then(
                     ({ data }) => {
-                        this.clients = data.customers;
+                        this.clients = data.vendors;
                     }
                 )
         },
@@ -288,10 +270,9 @@ export default {
                 // If the product is not in the order, add it with quantity 1 and unique ID
                 this.currentOrder.push({
                     id: product.id,
-                    name: product.productname,
-                    price: product.productprice,
+                    name: product.item_name,
+                    price: product.item_price,
                     quantity: 1,
-                    image: product.productimg,
                     transactionId: uniqueId // Add a unique transactionId for this product
                 });
             }

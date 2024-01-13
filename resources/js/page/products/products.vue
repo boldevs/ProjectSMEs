@@ -2,6 +2,7 @@
     <!-- component -->
     <!-- This is an example component -->
     <div>
+        <h1 class="text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-xl lg:text-xl dark:text-white">Product</h1>
         <div class="flex items-center justify-between">
             <div class="relative my-2 w-[400px]">
                 <input type="text" id="password" v-model="searchKey"
@@ -70,18 +71,7 @@
 
                                     </select>
                                 </div>
-                                <div class="col-span-2 sm:col-span-1">
-                                    <label for="category"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
-                                    <select id="category" v-model="model.product.IsActive"
-                                        class="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:border-sky-600  w-full p-2.5 focus:outline-none">
-                                        <option selected="">Select category</option>
-                                        <option value="1">Active</option>
-                                        <option value="2">Low Stock</option>
-                                        <option value="3">Out of Stock</option>
 
-                                    </select>
-                                </div>
                                 <div class="col-span-2">
                                     <div class="card">
                                         <Toast />
@@ -211,10 +201,7 @@
                             class="px-6 py-3 text-left text-xs font-medium  text-white uppercase tracking-wider">
                             Price
                         </th>
-                        <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium  text-white uppercase tracking-wider">
-                            Status
-                        </th>
+
                         <th scope="col"
                             class="px-6 py-3 text-left text-xs font-medium  text-white uppercase tracking-wider">
 
@@ -245,15 +232,7 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {{ products.productprice }}$
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span :class="{
-                                'px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800': products.IsActive === 1,
-                                'px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800': products.IsActive === 2,
-                                'px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800': products.IsActive === 3
-                            }">
-                                {{ products.IsActive === 1 ? 'Active' : (products.IsActive === 2 ? 'Low Stock' : 'Out of Stock') }}
-                            </span>
-                        </td>
+
                         <td class="px-6 py-4 whitespace-nowrap  text-sm font-medium">
                             <div class="card flex justify-content-center">
                                 <Button type="button" icon="pi pi-ellipsis-v" @click="showContextMenu(products)" />
@@ -305,7 +284,6 @@ export default {
                     productprice: '',
                     category_id: '',
                     productimg: '',
-                    IsActive: ''
                 }
             },
             result: [],
@@ -331,7 +309,6 @@ export default {
                 productname: '',
                 productprice: '',
                 productimg: '',
-                IsActive: '',
                 category_id: ''
             }
         },
@@ -360,17 +337,7 @@ export default {
             this.model.product = this.contextMenuProduct;
             this.images = this.getImageUrl(this.model.product.productimg);
         },
-        updateData() {
-            var editrecords = 'http://127.0.0.1:8000/api/products/' + this.model.product.id;
-            axios.put(editrecords, this.model.product.id)
-                .then(
-                    ({ data }) => {
-                        this.resetForm();
-                        this.productLoad();
-                    }
-                );
 
-        },
         save() {
             if (this.model.product.id == '') {
                 this.saveData();
@@ -390,7 +357,7 @@ export default {
                 console.log(formData);
                 this.resetForm();
                 this.productLoad();
-                this.onTemplatedUpload();
+                this.$toast.add({ severity: 'success', summary: 'Add Product Success', detail: 'This Add is updated successfully!', life: 3000 });
 
             } catch (error) {
                 console.error('Error saving data:', error);
@@ -444,7 +411,11 @@ export default {
             this.$refs.menu.toggle(event);
         },
         confirmDelete(products) {
-            this.removeProduct();
+            // Show a confirmation dialog/modal to confirm deletion, then call removeProduct
+            // You can use a UI framework modal or create a custom confirmation dialog
+            if (confirm('Are you sure you want to delete this item?')) {
+                this.removeProduct();
+            }
         },
         removeProduct() {
             if (this.contextMenuProduct) {

@@ -43,6 +43,7 @@ Route::delete('vendors/{id}/delete', [VendorController::class, 'destroy']);
 
 Route::get('items', [ItemController::class, 'index']);
 Route::post('items', [ItemController::class, 'store']);
+Route::get('items/search', [ItemController::class, 'search']);
 Route::get('items/{id}', [ItemController::class, 'show']);
 Route::put('items/{id}/edit', [ItemController::class, 'update']);
 Route::delete('items/{id}/delete', [ItemController::class, 'destroy']);
@@ -70,12 +71,12 @@ Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 Route::get('/sales', [SaleController::class, 'index']);
 Route::post('/sales', [SaleController::class, 'store']);
 Route::get('/sales/search', [SaleController::class, 'search']);
-Route::get('/sales/{sid}', [SaleController::class, 'findBySId']);
+
 Route::get('/sales/{id}', [SaleController::class, 'show']);
 Route::put('/sales/{id}', [SaleController::class, 'update']);
 Route::delete('/sales/{id}', [SaleController::class, 'destroy']);
-
-Route::post('/invoice', [PrintFormController::class, 'index']);
+//invoice
+Route::post('/invoice/{id}', [PrintFormController::class, 'show']);
 
 
 

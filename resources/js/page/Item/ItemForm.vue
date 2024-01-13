@@ -2,7 +2,8 @@
     <!-- component -->
     <!-- This is an example component -->
     <div>
-        <h1>Item </h1>
+
+        <h1 class=" text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-xl lg:text-xl dark:text-white">Item</h1>
         <div class="flex items-center justify-between">
             <div class="relative my-2 w-[400px]">
                 <input type="text" id="password" v-model="searchKey"
@@ -29,7 +30,7 @@
 
                         <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                             <h3 class="text-lg font-semibold text-gray-900">
-                                Create Customer
+                                Create ITem
                             </h3>
                             <button type="button" @click="closeDialog"
                                 class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -71,7 +72,7 @@
                                         d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                         clip-rule="evenodd"></path>
                                 </svg>
-                                {{ this.saveFlex }}
+                               {{ this.saveFlex }}
                             </button>
                         </form>
 
@@ -148,11 +149,13 @@
             <Toast />
 
         </div>
+
     </div>
 </template>
 
 <script>
 import axios from 'axios'
+
 export default {
     data() {
         return {
@@ -220,17 +223,7 @@ export default {
             this.showDialog();
             this.model.product = this.contextMenuProduct;
         },
-        updateData() {
-            var editrecords = 'http://127.0.0.1:8000/api/items/' + this.model.product.id;
-            axios.put(editrecords, this.model.product.id)
-                .then(
-                    ({ data }) => {
-                        this.resetForm();
-                        this.productLoad();
-                    }
-                );
 
-        },
         save() {
             if (this.model.product.id == '') {
 
@@ -249,7 +242,7 @@ export default {
 
                 this.resetForm();
                 this.productLoad();
-                this.$toast.add({ severity: 'success', summary: 'Update Product Success', detail: 'This Product is update Successfully!', life: 3000 });
+                this.$toast.add({ severity: 'success', summary: 'Upload Product Success', detail: 'This Product is Upload Successfully!', life: 3000 });
 
 
             } catch (error) {
@@ -350,7 +343,7 @@ export default {
         closeDialog() {
             this.saveFlex = 'Add New Item'
             this.visible = false;
-
+            this.resetForm();
 
         },
         toggle(event) {

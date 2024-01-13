@@ -17,23 +17,19 @@
                         <p class="text-white">Admin </p>
                     </div>
                 </div>
-                <div class="   py-3 rounded-sm cursor-pointer text-white hover:text-white">
-                    <router-link to="/" class="px-2 flex space-x-2"><span class="pi pi-microsoft"
-                            v-tooltip.right="'Dashboard'"></span> <span
-                            v-show="dataOpenSideBar">Dashboard</span></router-link>
-                </div>
+
                 <div class="  py-3 rounded-md cursor-pointer text-white hover:text-gray-300">
                     <router-link to="/sale" class="px-2 flex space-x-2"><span class="pi pi-money-bill"
                             v-tooltip.right="'Sale'"></span> <span v-show="dataOpenSideBar">Sale</span></router-link>
                 </div>
                 <div class="  py-3 rounded-md cursor-pointer text-white hover:text-gray-300">
                     <router-link to="/salelist" class="px-2 flex space-x-2"><span class=""
-                            v-tooltip.right="'Invoice'"><img class="w-5 h-5 text-white" src="https://cdn.icon-icons.com/icons2/3489/PNG/512/paying_money_invoice_payment_your_bill_icon_220368.png" alt=""></span> <span v-show="dataOpenSideBar">Invoice</span></router-link>
+                            v-tooltip.right="'Invoice'"><img class="w-5 h-5 text-white" src="../../asset/invoice.png" alt=""></span> <span v-show="dataOpenSideBar">Invoice</span></router-link>
                 </div>
-                <!-- <div class="  py-3 rounded-md cursor-pointer text-white hover:text-gray-300">
-                    <router-link to="/purchase" class="px-2 flex space-x-2"><span class="pi pi-shopping-bag"
-                            v-tooltip.right="'Purchase'"></span> <span v-show="dataOpenSideBar">Purchase</span></router-link>
-                </div> -->
+                <div class="  py-3 rounded-md cursor-pointer text-white hover:text-gray-300">
+                    <router-link to="/purchase" class="px-2 flex space-x-2"><span class=""
+                            v-tooltip.right="'Purchase'"><img class="w-5 h-5 text-white" src="../../asset/payment-method.png" alt=""></span> <span v-show="dataOpenSideBar">Purchase</span></router-link>
+                </div>
 
                 <div class="  py-3 rounded-md cursor-pointer text-white hover:text-gray-300">
                     <router-link to="/ItemForm" class="px-2 flex space-x-2"><span class="pi pi-building"

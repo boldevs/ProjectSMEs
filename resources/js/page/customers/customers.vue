@@ -2,7 +2,7 @@
     <!-- component -->
     <!-- This is an example component -->
     <div>
-        <h1>Customer </h1>
+        <h1 class="text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-xl lg:text-xl dark:text-white">Customer</h1>
         <div class="flex items-center justify-between">
             <div class="relative my-2 w-[400px]">
                 <input type="text" id="password" v-model="searchKey"
@@ -207,8 +207,6 @@ export default {
                     customer_contact: '',
                     customer_type: '',
                     customer_address: ''
-
-
                 }
             },
             result: null,
@@ -252,17 +250,7 @@ export default {
             this.showDialog();
             this.model.product = this.contextMenuProduct;
         },
-        updateData() {
-            var editrecords = 'http://127.0.0.1:8000/api/customers/' + this.model.product.id;
-            axios.put(editrecords, this.model.product.id)
-                .then(
-                    ({ data }) => {
-                        this.resetForm();
-                        this.productLoad();
-                    }
-                );
 
-        },
         save() {
             if (this.model.product.id == '') {
 
@@ -272,6 +260,7 @@ export default {
 
                 this.updateData();
             }
+
             this.closeDialog();
         },
         saveData() {
@@ -296,7 +285,7 @@ export default {
             if (this.contextMenuProduct) {
                 const productId = this.contextMenuProduct.id;
 
-                var editrecords = `http://127.0.0.1:8000/api/customers/${productId}`;
+                var editrecords = `http://127.0.0.1:8000/api/customers/${productId}/edit`;
                 axios.put(editrecords, this.model.product)
                     .then(
                         ({ data }) => {
@@ -313,7 +302,11 @@ export default {
             this.$refs.menu.toggle(event);
         },
         confirmDelete(products) {
-            this.removeProduct();
+            // Show a confirmation dialog/modal to confirm deletion, then call removeProduct
+            // You can use a UI framework modal or create a custom confirmation dialog
+            if (confirm('Are you sure you want to delete this item?')) {
+                this.removeProduct();
+            }
         },
         removeProduct() {
             if (this.contextMenuProduct) {
@@ -378,7 +371,7 @@ export default {
         closeDialog() {
             this.saveFlex = 'Add New Customer'
             this.visible = false;
-
+            this.resetForm();
 
         },
         toggle(event) {

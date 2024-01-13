@@ -94,7 +94,7 @@ class ItemController extends Controller
                 'item_name' => $request->item_name,
                 'item_price' => $request->item_price,
             ]);
-            
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Item updated successfully!',
@@ -129,5 +129,24 @@ class ItemController extends Controller
             ]);
         }
 
+    }
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+
+        // Perform the search query
+        $categories = Item::where('item_name', 'like', '%' . $keyword . '%')->get();
+
+        if ($categories->count() > 0) {
+            return response()->json([
+                'status' => '200',
+                'items' => $categories
+            ]);
+        } else {
+            return response()->json([
+                'status' => '404',
+                'items' => 'No Records Found!'
+            ]);
+        }
     }
 }

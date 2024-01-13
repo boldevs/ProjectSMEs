@@ -83,19 +83,7 @@ class VendorController extends Controller
     public function update(Request $request, $id)
     {
         // Function to update a Vendor by ID
-        $validator = Validator::make($request->all(), [
-            'vendorname' => $request->vendorname,
-            'vendorcontact' => $request->vendorcontact,
-            'vendor_type' => $request->vendor_type,
-            'vendor_address' => $request->vendor_address
-        ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => '422',
-                'errors' => $validator->messages()
-            ]);
-        } else {
             $vendors = Vendor::find($id);
             if ($vendors) {
                 $vendors->update([
@@ -116,7 +104,6 @@ class VendorController extends Controller
                 ]);
             }
 
-        }
     }
 
     public function destroy($id)

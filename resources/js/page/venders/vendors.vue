@@ -2,7 +2,7 @@
     <!-- component -->
     <!-- This is an example component -->
     <div>
-        <h1>Venders </h1>
+        <h1 class="text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-xl lg:text-xl dark:text-white">Vendors</h1>
         <div class="flex items-center justify-between">
             <div class="relative my-2 w-[400px]">
                 <input type="text" id="password" v-model="searchKey"
@@ -139,11 +139,11 @@
 
                     </tr>
                 </thead>
-                
-                <tbody class="bg-white divide-y divide-gray-200"  v-if="result != 'No Record Fonud!'">
-                    
+
+                <tbody class="bg-white divide-y divide-gray-200" v-if="result != 'No Record Fonud!'">
+
                     <tr v-for="products in result" :key="products.id">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" >
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {{ products.id }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -233,10 +233,10 @@ export default {
         resetForm() {
             this.model.product = {
                 id: '',
-                customer_name: '',
-                customer_contact: '',
-                customer_type: '',
-                customer_address: ''
+                vendorname: '',
+                vendorcontact: '',
+                vendor_type: '',
+                vendor_address: ''
             }
         },
         productLoad() {
@@ -254,24 +254,14 @@ export default {
             this.showDialog();
             this.model.product = this.contextMenuProduct;
         },
-        updateData() {
-            var editrecords = 'http://127.0.0.1:8000/api/vendors/' + this.model.product.id;
-            axios.put(editrecords, this.model.product.id)
-                .then(
-                    ({ data }) => {
-                        this.resetForm();
-                        this.productLoad();
-                    }
-                );
 
-        },
         save() {
             if (this.model.product.id == '') {
-              
+
                 this.saveData();
             }
             else {
-              
+
                 this.updateData();
             }
             this.closeDialog();
@@ -298,7 +288,7 @@ export default {
             if (this.contextMenuProduct) {
                 const productId = this.contextMenuProduct.id;
 
-                var editrecords = `http://127.0.0.1:8000/api/vendors/${productId}`;
+                var editrecords = `http://127.0.0.1:8000/api/vendors/${productId}/edit`;
                 axios.put(editrecords, this.model.product)
                     .then(
                         ({ data }) => {
@@ -311,11 +301,15 @@ export default {
         },
         showContextMenu(product) {
             this.contextMenuProduct = product;
-            console.log("Product Items : ", this.contextMenuProduct);
+            console.log("Product Items : ", this.contextMenuProduct.id);
             this.$refs.menu.toggle(event);
         },
         confirmDelete(products) {
-            this.removeProduct();
+           // Show a confirmation dialog/modal to confirm deletion, then call removeProduct
+            // You can use a UI framework modal or create a custom confirmation dialog
+            if (confirm('Are you sure you want to delete this item?')) {
+                this.removeProduct();
+            }
         },
         removeProduct() {
             if (this.contextMenuProduct) {
@@ -374,13 +368,13 @@ export default {
             if (this.contextMenuProduct) {
                 this.saveFlex = 'Update Vendor'
             }
-  
+
             this.visible = true;
         },
         closeDialog() {
             this.saveFlex = 'Add New Vendor'
             this.visible = false;
-            
+
 
         },
         toggle(event) {

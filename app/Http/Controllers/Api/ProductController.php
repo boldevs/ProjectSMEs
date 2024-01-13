@@ -39,7 +39,6 @@ class ProductController extends Controller
                     'productname' => $product->productname,
                     'productprice' => $product->productprice,
                     'category_id' => $product->category_id,
-                    'IsActive' => $product->IsActive,
                     'productimg' => asset('storage/' . $product->productimg), // Generating image URL
                 ];
             });
@@ -143,9 +142,9 @@ class ProductController extends Controller
         }
 
         // Update IsActive field if it exists in the request
-        if ($request->has('IsActive')) {
-            $product->IsActive = $request->IsActive;
-        }
+        // if ($request->has('IsActive')) {
+        //     $product->IsActive = $request->IsActive;
+        // }
 
         $product->save();
 
