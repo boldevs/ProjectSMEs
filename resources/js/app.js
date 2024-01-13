@@ -1,6 +1,4 @@
-import 'primevue/resources/themes/lara-light-green/theme.css'
-import "primevue/resources/primevue.min.css"; /* Deprecated */
-import {createApp} from 'vue/dist/vue.esm-bundler.js'
+import { createApp } from 'vue/dist/vue.esm-bundler.js'
 
 import App from './App.vue';
 import router from './router';
@@ -27,10 +25,43 @@ import Dialog from 'primevue/dialog';
 import Tooltip from 'primevue/tooltip';
 import Toast from 'primevue/toast';
 import FileUpload from 'primevue/fileupload';
-import ConfirmDialog from 'primevue/confirmdialog';
+
+import axios from 'axios';
+import VueAxios from 'vue-axios'
+
+var getToken = () => {
+    try {
+        var toke = localStorage.getItem("token");
+        if (!toke)
+            return null;
+        return JSON.parse(toke)
+    } catch {
+        return null;
+    }
+};
+
+// configure axios
+axios.interceptors.request.use(async config => {
+    config.baseURL = "http://127.0.0.1:8000"
+    config.headers.Authorization = "Bearer " + getToken();
+    config.headers.Accept = "application/json,text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+    return config
+}, errors => {
+    return Promise.reject(errors)
+})
+
+axios.interceptors.response.use(async (response) => {
+    if (response.status === 400) {
+        router.push({ name: 'unauthorized' });
+    }
+    return response;
+},
+(error) => {
+    return Promise.reject(error);
+});
 
 const app = createApp({
-    components : {
+    components: {
         App
     }
 });
@@ -43,15 +74,17 @@ app.component('AutoComplete', AutoComplete);
 app.component('Button', Button);
 app.component('Dialog', Dialog);
 app.component('Avatar', Avatar);
-app.component('Menu',Menu);
+app.component('Menu', Menu);
 app.directive('tooltip', Tooltip);
 app.directive('DataTable', DataTable);
 app.directive('Column', Column);
 app.directive('ColumnGroup', ColumnGroup);
 app.directive('Row', Row);
 
-app.use(ToastService)
-app.use(ConfirmationService);
-app.use(router)
+app.use(VueAxios, axios);
+
+app.use(ToastService);
+app.use(router);
 app.use(PrimeVue);
+
 app.mount('#app')

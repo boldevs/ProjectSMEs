@@ -7,7 +7,8 @@
 
       <div class="flex space-x-3 items-center justify-center px-3">
         <div class="text-md cursor-pointer">Admin</div>
-        <Avatar icon="pi pi-user" class="mr-2 cursor-pointer" style="background-color:#1e63ca; color: #ffffff" shape="circle" @click="toggle" aria-haspopup="true" aria-controls="overlay_menu" />
+        <Avatar icon="pi pi-user" class="mr-2 cursor-pointer" style="background-color:#1e63ca; color: #ffffff"
+          shape="circle" @click="toggle" aria-haspopup="true" aria-controls="overlay_menu" />
         <Menu id="overlay_menu" ref="menu" :model="items" :popup="true" />
 
       </div>
@@ -28,7 +29,7 @@ export default {
           label: 'Logout',
           icon: 'pi pi-refresh',
           command: () => {
-            this.$toast.add({ severity: 'success', summary: 'Updated', detail: 'Data Updated', life: 3000 });
+            this.logout();
           }
         },
         {
@@ -45,11 +46,25 @@ export default {
     toggle(event) {
       this.$refs.menu.toggle(event);
     },
+    logout: function () {
+      this.axios.post('api/logout', this.user).then((response) => {
+
+        localStorage.removeItem("token")
+        localStorage.removeItem("user")
+
+        this.$router.push("/login")
+
+      }).catch(errors => {
+        var hasErrors = errors?.response?.data;
+
+        if (hasErrors.errors) {
+          alert(hasErrors.errors[0]);
+        }
+      })
+    }
   }
 
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
