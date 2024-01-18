@@ -57,6 +57,11 @@
                     <div class="px-2 flex space-x-2"><span class="pi pi-slack" v-tooltip.right="'Setting'"></span> <span
                             v-show="dataOpenSideBar">Setting</span></div>
                 </div>
+
+                <div class="  py-3 rounded-md cursor-pointer text-white hover:text-gray-300">
+                    <router-link to="/user" class="px-2 flex space-x-2"><span class="pi pi-money-bill"
+                            v-tooltip.right="'User'"></span> <span v-show="dataOpenSideBar">User</span></router-link>
+                </div>
             </div>
             <div class="menu-man text-left px-2 justify-self-end whitespace-nowrap">
                 <div class="   py-3 rounded-md cursor-pointer text-white hover:text-gray-300">
