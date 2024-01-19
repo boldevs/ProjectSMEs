@@ -3,7 +3,6 @@ import { createApp } from 'vue/dist/vue.esm-bundler.js'
 import App from './App.vue';
 import router from './router';
 import ToastService from 'primevue/toastservice';
-import ConfirmationService from 'primevue/confirmationservice';
 
 import PrimeVue from 'primevue/config';
 import 'primevue/resources/themes/tailwind-light/theme.css';
@@ -65,7 +64,7 @@ const app = createApp({
         App
     }
 });
-app.component('ConfirmDialog', ConfirmDialog);
+
 app.component('InputText', InputText);
 app.component('Toast', Toast);
 app.component('TieredMenu', TieredMenu);

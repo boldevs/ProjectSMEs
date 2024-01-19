@@ -236,7 +236,7 @@ export default {
             }
         },
         productLoad() {
-            var page = "http://127.0.0.1:8000/api/customers";
+            var page = "/api/customers";
             axios.get(page)
                 .then(
                     ({ data }) => {

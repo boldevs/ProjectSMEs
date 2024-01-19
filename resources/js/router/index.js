@@ -15,6 +15,7 @@ import Customer from '../page/customers/customers.vue';
 import Vender from '../page/venders/vendors.vue';
 import Item from '../page/Item/ItemForm.vue';
 import SaleList from '../page/sale/saleslist.vue';
+import Purchase from '../page/purchase/index.vue';
 
 import auth from '../middleware/auth';
 import guest from '../middleware/guest';
@@ -87,6 +88,12 @@ const routes = [
             },
             {
                 path: '/salelist', component: SaleList,
+                beforeEnter: (to, from, next) => {
+                    auth({ next, router })
+                }
+            },
+            {
+                path: '/purchase', component: Purchase,
                 beforeEnter: (to, from, next) => {
                     auth({ next, router })
                 }
