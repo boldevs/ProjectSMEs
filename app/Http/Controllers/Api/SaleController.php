@@ -28,12 +28,14 @@ class SaleController extends Controller
             ->leftJoin('customers', 'sales.particular_client', '=', 'customers.id')
             ->leftJoin('users', 'sales.user_id', '=', 'users.id')
             ->groupBy('sales.SId', 'sales.SDate', 'cutomer_type.stand_for', 'users.NAME', 'sales.discount', 'customers.customer_name')
+            ->orderBy('sales.SDate', 'DESC')  // Add this line to order by SDate in ascending order
             ->get();
 
-            return response()->json([
-                'status' => '400',
-                'sales' => $sales
-            ]);
+        return response()->json([
+            'status' => '400',
+            'sales' => $sales
+        ]);
+
     }
 
     public function store(Request $request)

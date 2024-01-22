@@ -16,6 +16,8 @@ import Vender from '../page/venders/vendors.vue';
 import Item from '../page/Item/ItemForm.vue';
 import SaleList from '../page/sale/saleslist.vue';
 import Purchase from '../page/purchase/index.vue';
+import User from '../page/user/user.vue'
+
 
 import auth from '../middleware/auth';
 import guest from '../middleware/guest';
@@ -38,7 +40,7 @@ const routes = [
         component: Unauthorized
     },
     {
-        path: '/', redirect: '/dashboard', component: Master,
+        path: '/', redirect: '/sale', component: Master,
         children: [
             // UserHome will be rendered inside User's <router-view>
             // when /user/:id is matched
@@ -93,7 +95,15 @@ const routes = [
                 }
             },
             {
+
                 path: '/purchase', component: Purchase,
+                beforeEnter: (to, from, next) => {
+                    auth({ next, router })
+                }
+            },
+            {
+                path: '/user', component: User,
+
                 beforeEnter: (to, from, next) => {
                     auth({ next, router })
                 }

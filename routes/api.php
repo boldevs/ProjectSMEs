@@ -11,7 +11,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\SaleController;
 use App\Http\Controllers\Api\PrintFormController;
-
+use App\Http\Controllers\Api\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,13 +78,25 @@ Route::group(['middleware' => ['role:super-admin|normal-user']], function () {
     Route::put('/sales/{id}', [SaleController::class, 'update']);
     Route::delete('/sales/{id}', [SaleController::class, 'destroy']);
 
-    Route::post('/invoice', [PrintFormController::class, 'index']);
+    Route::get('/invoice/{id}', [PrintFormController::class, 'show']);
 });
 
-// for teacher
-Route::group(['middleware' => ['role:normal-user']], function () {
+
+Route::group(['middleware' => ['role:super-admin']], function () {
+    Route::get('/roles', [UserController::class, 'index']);
+
+    Route::get('/users', [UserController::class, 'index']);
+    Route::post('/users', [UserController::class, 'create']);
+    Route::get('/users/{id}', [UserController::class, 'show']);
+    Route::put('/users/{id}', [UserController::class, 'update']);
+    Route::delete('/users/{id}', [UserController::class, 'destroy']);
 });
 
+// Route::get('/users', [UserController::class, 'index']);
+// Route::post('/users', [UserController::class, 'store']);
+// Route::get('/users/{id}', [UserController::class, 'show']);
+// Route::put('/users/{id}', [UserController::class, 'update']);
+// Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
 // authentications
 Route::middleware('auth:sanctum')->group(function () {

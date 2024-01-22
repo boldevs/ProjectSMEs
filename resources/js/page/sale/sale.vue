@@ -37,7 +37,7 @@
                     </div>
                     <!-- end header -->
                     <!-- categories -->
-                    <div class="mt-5 flex flex-row px-5" @click="filterCategory">
+                    <div v-if="Category != 'No Record Fonud!'" class="mt-5 flex flex-row px-5" @click="filterCategory">
                         <span class="px-5 py-1 rounded-2xl text-sm mr-4 cursor-pointer"
                             :class="{ 'bg-sky-500 text-white': selectedItem === 'All items' }"
                             @click="selectItem('All items')">
@@ -51,7 +51,7 @@
                     </div>
                     <!-- end categories -->
                     <!-- products -->
-                    <div class="grid grid-cols-3 gap-4 px-5 mt-5 overflow-y-auto  cursor-pointer" v-if="products != 'No matching products found!'">
+                    <div class="grid grid-cols-3 gap-4 px-5 mt-5 overflow-y-auto  cursor-pointer" v-if="Category != 'No Record Fonud!'">
                         <div class="px-3 py-3 flex flex-col border border-gray-200 rounded-md h-32 justify-between" v-for="item in products" :key="item.id" @click="addToOrder(item)">
                             <div class="flex justify-between items-center">
                                 <div class="font-bold text-gray-800">{{ item.productname }}</div>
@@ -61,7 +61,7 @@
                         </div>
                     </div>
 
-                    <div v-if="products == 'No matching products found!'" class="flex justify-center items-center h-64">
+                    <div v-if="Category == 'No Record Fonud!'" class="flex justify-center items-center h-64">
                         <p class="text-center">No matching products found!</p>
                     </div>
                     <!-- end products -->
@@ -238,6 +238,7 @@ export default {
                 .then(
                     ({ data }) => {
                         this.Category = data.Category;
+                        console.log( this.Category);
                     }
                 )
 

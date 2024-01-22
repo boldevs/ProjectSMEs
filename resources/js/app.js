@@ -15,6 +15,7 @@ import ColumnGroup from 'primevue/columngroup';   // optional
 import Row from 'primevue/row';                   // optional
 import TieredMenu from 'primevue/tieredmenu';
 
+import ConfirmDialog from 'primevue/confirmdialog'
 import InputText from 'primevue/inputtext';
 import Avatar from 'primevue/avatar';
 import Button from 'primevue/button';
@@ -25,45 +26,16 @@ import Tooltip from 'primevue/tooltip';
 import Toast from 'primevue/toast';
 import FileUpload from 'primevue/fileupload';
 
-import axios from 'axios';
+
+import axios from './plugins/axios-static'
 import VueAxios from 'vue-axios'
-
-var getToken = () => {
-    try {
-        var toke = localStorage.getItem("token");
-        if (!toke)
-            return null;
-        return JSON.parse(toke)
-    } catch {
-        return null;
-    }
-};
-
-// configure axios
-axios.interceptors.request.use(async config => {
-    config.baseURL = "http://127.0.0.1:8000"
-    config.headers.Authorization = "Bearer " + getToken();
-    config.headers.Accept = "application/json,text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-    return config
-}, errors => {
-    return Promise.reject(errors)
-})
-
-axios.interceptors.response.use(async (response) => {
-    if (response.status === 400) {
-        router.push({ name: 'unauthorized' });
-    }
-    return response;
-},
-(error) => {
-    return Promise.reject(error);
-});
 
 const app = createApp({
     components: {
         App
     }
 });
+
 
 app.component('InputText', InputText);
 app.component('Toast', Toast);

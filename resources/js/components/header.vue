@@ -6,7 +6,7 @@
       </div>
 
       <div class="flex space-x-3 items-center justify-center px-3">
-        <div class="text-md cursor-pointer">Admin</div>
+
         <Avatar icon="pi pi-user" class="mr-2 cursor-pointer" style="background-color:#1e63ca; color: #ffffff"
           shape="circle" @click="toggle" aria-haspopup="true" aria-controls="overlay_menu" />
         <Menu id="overlay_menu" ref="menu" :model="items" :popup="true" />
